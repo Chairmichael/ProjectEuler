@@ -111,4 +111,4 @@ with open('numbers.txt', 'r+') as file_numbers:
 
 with open('numbers2.txt', 'w+') as file_numbers:
 	for line in numbers:
-		file_numbers.write('['+line[:len(line)-1]+'],'+'\n')'''
+		file_numbers.write(''+line[:len(line)-1]+','+'\n')'''
