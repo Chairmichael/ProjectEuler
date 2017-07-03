@@ -20,7 +20,7 @@ def to_words(num):
 	if num//10 == 1: # need to use teens?
 		words.append(teens[num//10])
 		pass_teens = True
-	for x in str(num)[::-1]:
-		if :
-			pass
-		
+	for x, i in iter(str(num)[::-1]):
+		if pass_teens:
+			if i%3 == 0: # in the ones place
+			
