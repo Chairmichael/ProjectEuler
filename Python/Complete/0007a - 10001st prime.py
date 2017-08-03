@@ -10,7 +10,7 @@ num = 3
 found = False
 while not found:
 	is_prime = True
-	for div in range(3, int(sqrt(num))+1):
+	for div in range(3, int(sqrt(num))+1, 2):
 		if num % div == 0:
 			is_prime = False
 			break
