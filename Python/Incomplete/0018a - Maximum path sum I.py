@@ -34,13 +34,16 @@ nums = [
 [63,66, 4,68,89,53,67,30,73,16,69,87,40,31],
 [ 4,62,98,27,23, 9,70,98,73,93,38,53,60, 4,23]]
 
-cur_sum = nums[0][0]
-best_sum = nums[0][0]
-i = 0
-done = False
+def path():
+	total = 0
+	largest = 0
+	i = 0
+	for line in nums:
+		pass
 
-while not done:
-	
+def main():
+	path()
 
-	if i > len(nums):
-		done = True
+if __name__ == '__main__':
+	main()
+	# opted for the brute-force for now
