@@ -1,10 +1,19 @@
 #!/usr/bin/env 
 # Get_Problem.py
 
-def get_description():
-    pass
 
-def select_problem(ext, num):
+def get_prob(num, url):
+    page = requests.get(url)
+    tree = html.fromstring(page.content)
+    prob_title = tree.xpath('//h2/text()')[0]
+    prob_desc = tree.xpath('//div[@class="problem_content"]/p/text()')
+    print(prob_title)
+    prob_desc = [textwrap.fill(p, 78) for p in prob_desc]
+    prob_desc = '\n'.join(prob_desc)
+    print(prob_desc)
+    return prob_title, prob_desc
+
+def select_prob(ext, num):
     if num is not None:
         return num
     # path for the complete and incomplete directories
@@ -17,15 +26,12 @@ def select_problem(ext, num):
                     num = int(filename[0:4])
                     if int(filename[0:4]) > largest:
                         largest = num
-    # TODO: catch dir not found and explain usage
-    # except Exception_Foo as e:
-    #     pass
     except Exception as e:
         raise e
     finally:
         return largest + 1
 
-def create_problem_file():
+def create_prob_file(num, content):
     pass
 
 def get_file_ext(lang):
@@ -40,22 +46,30 @@ def get_file_ext(lang):
     elif lang == 'go': return '.go'
 
 def main(cl_args):
-    basic_code = ("#!/usr/bin/env\n# {}.py\n\n\ndef main():\n"
+    basic_code = ("#!/usr/bin/env\n# {fn}.py\n{desc}\n\ndef main():\n"
                 "    pass\n\nif __name__ == '__main__':\n"
                 "    import os, sys\n    main()\n")
     global starting_dir
     starting_dir = os.getcwd()
 
     extention = get_file_ext(lang=cl_args.l)
-    target = select_problem(ext=extention, num=cl_args.n)
+    target = select_prob(ext=extention, num=cl_args.n)
     print(f'\nProblem __{target}__ selected\n')
 
-    print('Connecting to projecteuler.net', end='')
-    # TODO: Web-scrape to get the problem description
+    print('Connecting to projecteuler.net')
+    prob_url = f'https://projecteuler.net/problem={target}'
+    desc_text = get_prob(num=target, url=prob_url)
+    create_prob_file(num=target, content=desc_text)
+
+    if cl_args.o:
+        #open problem webpage
+        pass
     
 
 if __name__ == '__main__':
-    import os, sys, argparse
+    import os, sys, argparse, textwrap
+    from lxml import html
+    import requests
     
     # setup command-line arguments
     description_text = (
@@ -69,10 +83,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=description_text)
 
     n_helptext = 'an integer of the problem to initialize with a file'
-    parser.add_argument('-n', metavar='N', type=int, nargs='+', help=n_helptext)
+    parser.add_argument('-n', metavar='N', type=int, 
+                        nargs='?', help=n_helptext)
 
     t_helptext = 'the programming language to initialize (default is python)'
-    parser.add_argument('-l', metavar='L', type=str, help=t_helptext)
+    parser.add_argument('-l', metavar='L', type=str, 
+                        nargs='?', help=t_helptext)
+
+    o_helptext = 'provide this to not open the problem\'s webpage by default'
+    parser.add_argument('-o', metavar='O', default=True, help=t_helptext)
 
     args = parser.parse_args()
     main(args)
