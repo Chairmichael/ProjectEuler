@@ -22,9 +22,35 @@ cannot be written as the sum of two abundant numbers.
 '''
 
 
+def divisors(n):
+	# return [d for d in range(1, (n//2)+1) if n % d == 0]
+	for d in range(1, (n//2)+1):
+		if n % d == 0: yield d
+
+def adundant_nums(ceiling):
+	# dbg = print('n\t\ts\t\tdivisors')
+	for n in range(12, ceiling+1):
+		s = sum(divisors(n))
+		if s > n:
+			if 'dbg' in locals():
+				print(f'{n}\t\t{s}\t\t{[x for x in divisors(n)]}')
+			yield n
+
 
 def main():
-	pass
+	print('getting abundant numbers')
+	list_abund = [x for x in adundant_nums(28123)]
+	print('getting special numbers')
+	spec_nums = [ ]
+	for n in range(28123):
+		for x in list_abund:
+			if x > n: spec_nums.append(n)
+			for y in list_abund:
+				if y > n: spec_nums.append(n)
+				if x + y == n: break
+
+
+	print(sum(list(set(spec_nums))))
 
 if __name__ == '__main__':
 	main()

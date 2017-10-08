@@ -9,7 +9,7 @@ def get_prob(num, url):
     prob_desc = tree.xpath('//div[@class="problem_content"]/p/text()')
     print(prob_title)
     prob_desc = [textwrap.fill(p, 78) for p in prob_desc]
-    prob_desc = '\n'.join(prob_desc)
+    prob_desc = '\n\n'.join(prob_desc)
     return prob_title, prob_desc
 
 def select_prob(ext, num):
