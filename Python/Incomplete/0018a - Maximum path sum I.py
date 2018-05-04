@@ -35,12 +35,7 @@ nums = [
 [ 4,62,98,27,23, 9,70,98,73,93,38,53,60, 4,23]]
 
 def path():
-	total = 0
-	largest = 0
-	i = 0
-	for line in nums:
-		pass
-
+	pass
 def main():
 	path()
 

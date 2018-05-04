@@ -1,4 +1,4 @@
-#!/usr/bin/env 
+#/usr/bin/env 
 # Get_Problem.py
 
 
@@ -64,7 +64,7 @@ def get_file_ext(lang):
     elif lang == 'go': return '.go'
 
 def main(cl_args):
-    basic_code = ("#!/usr/bin/env\n# {fn}\n\n'''\n{desc}\n'''\n\n\ndef main():\n"
+    basic_code = ("#/usr/bin/env\n# {fn}\n\n'''\n{desc}\n'''\n\n\ndef main():\n"
                 "    pass\n\nif __name__ == '__main__':\n"
                 "    import os, sys\n    main()\n")
     global starting_dir
