@@ -19,7 +19,7 @@ def is_prime(n):
         div += 6
     return True
 
-# Generates the prime factors 
+# Generates the prime factors
 def prime_factors(n, direction='down'):
     # Get n's square root
     n_root = int(n**0.5)
@@ -32,7 +32,6 @@ def prime_factors(n, direction='down'):
     if direction.lower() == 'up':
         for div in range(3, n_root, 2):
             if not n % div and is_prime(n): yield div
-
 
 def main():
     [print(x) for x in prime_factors(13195)]
