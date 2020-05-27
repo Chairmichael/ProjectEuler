@@ -29,42 +29,45 @@ cannot be written as the sum of two abundant numbers.
 #                 return [x,y]
 #     return []
 
-from bisect import bisect_left
-def take_closest(myList, myNumber):
-    # Assumes myList is sorted. Returns closest value to myNumber.
-    # If two numbers are equally close, return the largest number.
-    pos = bisect_left(myList, myNumber)
-    if pos == 0:
-        return myList[0]
-    if pos == len(myList):
-        return myList[-1]
-    before = myList[pos - 1]
-    after = myList[pos]
-    if after - myNumber < myNumber - before:
-       return after 
-    else:
-       return before
-
+from bisect import bisect_right
+from bisect import insort
+from itertools import permutations
 
 def is_sum_two_abundants(n, nums):
     i = 0
-    j = nums.index(take_closest(nums, n)) + 1
+    j = bisect_right(nums, n)
+    # j = nums.index(take_closest(nums, n)) + 1
     i_increment = True
     while i < j:
         try:
             if nums[i] + nums[j] == n:
                 return True
             # change searching indexes
-            elif i_increment: 
+            elif i_increment:
                 i += 1
                 i_increment = False
-            else: 
+            else:
                 j -= 1
                 i_increment = True
         except:
             print(f'i = {i}  j = {j}  n = {n}')
             raise
     return False
+
+def get_adundant_sums(nums):
+    # l = [ ]
+    # for p in permutations(nums, 2):
+    #     a_sum = sum(p)
+    #     if not a_sum in l:
+    #         l.append(a_sum)
+    # return l
+    l = [ ]
+    for x in nums:
+        for y in nums:
+            a_sum = x + y
+            if not a_sum in l:
+                insort(l, a_sum)
+    return l
 
 def is_abundant_num(n):
     # sum proper divisors
@@ -75,21 +78,19 @@ def is_abundant_num(n):
             n_sum += div
     return n_sum > n
 
-def get_adundant_nums(ceiling):
+def get_adundant_numbers(ceiling):
     for x in range(1, ceiling):
         if is_abundant_num(x):
             yield x
 
 def main():
-    # [print(x) for x in get_adundant_nums(28123)]
-    print('getting list')
-    nums = [x for x in get_adundant_nums(30000)]
-    print(f'len(nums) = {len(nums)}')
-    print('calculating sum')
+    print('calculating sums')
+    sums = get_adundant_sums(get_adundant_numbers(28888))
     # Get numbers that are the sum of two abundant numbers
+    print('checking numbers')
     the_sum = 0
-    for x in range(28123+1):
-        if not is_sum_two_abundants(x, nums):
+    for x in range(28444):
+        if not x in sums:
             the_sum += x
     print(the_sum)
 
