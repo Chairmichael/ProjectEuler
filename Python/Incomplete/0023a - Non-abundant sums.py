@@ -1,5 +1,5 @@
-#!/usr/bin/env 
 # 0023a - Non-abundant sums.py
+#   Jefferson V. Henry
 
 '''
 A perfect number is a number for which the sum of its proper divisors is exactly
@@ -17,40 +17,82 @@ cannot be reduced any further by analysis even though it is known that the
 greatest number that cannot be expressed as the sum of two abundant numbers 
 is less than this limit.
 
-Find the sum of all the positive integers which 
+Find the sum of all the positive integers which
 cannot be written as the sum of two abundant numbers.
 '''
 
 
-def divisors(n):
-	# return [d for d in range(1, (n//2)+1) if n % d == 0]
-	for d in range(1, (n//2)+1):
-		if n % d == 0: yield d
+# def is_sum_two_abundants(n, nums):
+#     for x in nums:
+#         for y in nums:
+#             if n == x+y:
+#                 return [x,y]
+#     return []
 
-def adundant_nums(ceiling):
-	# dbg = print('n\t\ts\t\tdivisors')
-	for n in range(12, ceiling+1):
-		s = sum(divisors(n))
-		if s > n:
-			if 'dbg' in locals():
-				print(f'{n}\t\t{s}\t\t{[x for x in divisors(n)]}')
-			yield n
+from bisect import bisect_left
+def take_closest(myList, myNumber):
+    # Assumes myList is sorted. Returns closest value to myNumber.
+    # If two numbers are equally close, return the largest number.
+    pos = bisect_left(myList, myNumber)
+    if pos == 0:
+        return myList[0]
+    if pos == len(myList):
+        return myList[-1]
+    before = myList[pos - 1]
+    after = myList[pos]
+    if after - myNumber < myNumber - before:
+       return after 
+    else:
+       return before
 
+
+def is_sum_two_abundants(n, nums):
+    i = 0
+    j = nums.index(take_closest(nums, n)) + 1
+    i_increment = True
+    while i < j:
+        try:
+            if nums[i] + nums[j] == n:
+                return True
+            # change searching indexes
+            elif i_increment: 
+                i += 1
+                i_increment = False
+            else: 
+                j -= 1
+                i_increment = True
+        except:
+            print(f'i = {i}  j = {j}  n = {n}')
+            raise
+    return False
+
+def is_abundant_num(n):
+    # sum proper divisors
+    n_sum = 1
+    ceiling = int((n/2) + 1) # need to add one, bc range() end is exclusive
+    for div in range(2, ceiling):
+        if n % div == 0:
+            n_sum += div
+    return n_sum > n
+
+def get_adundant_nums(ceiling):
+    for x in range(1, ceiling):
+        if is_abundant_num(x):
+            yield x
 
 def main():
-	print('getting abundant numbers')
-	list_abund = [x for x in adundant_nums(28123)]
-	print('getting special numbers')
-	spec_nums = [ ]
-	for n in range(28123):
-		for x in list_abund:
-			if x > n: spec_nums.append(n)
-			for y in list_abund:
-				if y > n: spec_nums.append(n)
-				if x + y == n: break
+    # [print(x) for x in get_adundant_nums(28123)]
+    print('getting list')
+    nums = [x for x in get_adundant_nums(30000)]
+    print(f'len(nums) = {len(nums)}')
+    print('calculating sum')
+    # Get numbers that are the sum of two abundant numbers
+    the_sum = 0
+    for x in range(28123+1):
+        if not is_sum_two_abundants(x, nums):
+            the_sum += x
+    print(the_sum)
 
-
-	print(sum(list(set(spec_nums))))
 
 if __name__ == '__main__':
-	main()
+    main()
