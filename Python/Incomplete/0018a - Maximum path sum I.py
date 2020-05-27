@@ -8,14 +8,14 @@ on the row below, the maximum total from top to bottom is 23.
 8 5 *9 3
 '''
 # with open('nums.txt', 'r+') as nums:
-# 	with open('newnums.txt','w') as out:
-# 		for line in nums:
-# 			line = line.strip().split()
-# 			for i, x in enumerate(line): 
-# 				if x[0] == '0': line[i] = ' ' + x[1]
-# 			line = ','.join(line)
-# 			line = '[' + line + '],'
-# 			out.write(line + '\n')
+#   with open('newnums.txt','w') as out:
+#       for line in nums:
+#           line = line.strip().split()
+#           for i, x in enumerate(line): 
+#               if x[0] == '0': line[i] = ' ' + x[1]
+#           line = ','.join(line)
+#           line = '[' + line + '],'
+#           out.write(line + '\n')
 
 nums = [
 [75],
@@ -34,11 +34,29 @@ nums = [
 [63,66, 4,68,89,53,67,30,73,16,69,87,40,31],
 [ 4,62,98,27,23, 9,70,98,73,93,38,53,60, 4,23]]
 
-def path():
-	pass
+def path_sums(tri):
+    sums = []
+    current_sum = 0
+    for row in tri:
+        current_sum += row[0]
+    sums.append(current_sum)
+    return sums
+
+def path(tri): # nope
+    tri_sum = 0
+    i = 0
+    for row in tri:
+        if len(row) == 1:
+            tri_sum += row[0]
+        elif row[i] < row[i+1]:
+            tri_sum += row[i+1]
+            i += 1
+        else:
+            tri_sum += row[i]
+    return tri_sum
+
 def main():
-	path()
+    # print(path(nums))
 
 if __name__ == '__main__':
-	main()
-	# opted for the brute-force for now
+    main()
