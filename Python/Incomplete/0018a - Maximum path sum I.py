@@ -35,28 +35,27 @@ nums = [
 [ 4,62,98,27,23, 9,70,98,73,93,38,53,60, 4,23]]
 
 def path_sums(tri):
-    sums = []
-    current_sum = 0
-    for row in tri:
-        current_sum += row[0]
-    sums.append(current_sum)
-    return sums
+    # try permutations
+    pass
 
-def path(tri): # nope
+# this should work lul
+def path(tri): 
     tri_sum = 0
     i = 0
     for row in tri:
         if len(row) == 1:
             tri_sum += row[0]
+
         elif row[i] < row[i+1]:
             tri_sum += row[i+1]
             i += 1
         else:
             tri_sum += row[i]
+        print(row[i])
     return tri_sum
 
 def main():
-    # print(path(nums))
+    print(path(nums))
 
 if __name__ == '__main__':
     main()
