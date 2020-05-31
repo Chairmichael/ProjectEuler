@@ -78,7 +78,7 @@ def is_prime(n):
 
 def main():
     find_smallest_replace_prime(
-        ceiling=10000, prime_amount=8, max_replace_digits=4)
+        ceiling=1000, prime_amount=7, max_replace_digits=4)
     # 56003
 
 
