@@ -21,21 +21,38 @@ its decimal fraction part.
 
 import decimal
 D = decimal.Decimal
-LENGTH = 1000
+LENGTH = 20
+
+# Gets the length of the recurring cycle
+#   If used with fractions, the argument should be only the decimal part
+def principal_period(s):
+    # Return 0 if number terminates before LENGTH. 
+    # ie: 1/2, 1/8 or other non-repeating fraction
+    if len(s) < LENGTH:
+        return 0
+    #
 
 # TODO: Fix for fractions that start cycling after the first decimal place
-def principal_period(s):
-    print(s)
-    if len(s) != LENGTH:
-        return 0
-    for i in range(1, len(s)):
-        sub = s[:i]
-        x = len(s) // len(sub)
-        if sub*x == s[:len(sub)*x]:
-            print(len(sub))
-            return len(sub)
-    else:
-        return -1
+# def principal_period(s):
+#     # print(len(s),LENGTH,s)
+#     if len(s) < LENGTH:
+#         return 0
+#     for i in range(1, len(s)):
+#         try:
+#             for j in range(i):
+#                 sub = s[j:i]
+#                 print(f'sub =    {sub}')
+#                 if len(sub) != 0:
+#                     x = len(s) // len(sub)
+#                     print(f'length = {x}')
+#                     y = s[j:len(sub)*x]
+#                     print(f'long =   {y}')
+#                     if sub*x == s[j:len(sub)*x]:
+#                         return len(sub)
+#         except IndexError:
+#             print('IndexError')
+#     else:
+#         return -1
 
 # generates reciprocals of the natural numbers up to a ceiling
 def nat_rcp(ceiling):
@@ -47,7 +64,7 @@ def main():
     largest = 0
     decimal.getcontext().prec = LENGTH
     decimal.getcontext().rounding = decimal.ROUND_FLOOR
-    principal_period(str(D(1)/D(7))[2:])
+    print(principal_period(str(D(1)/D(6))[2:]))
     # for n, x in nat_rcp(1000):
     #     p = principal_period(str(x)[2:])
         # if p != 0:
